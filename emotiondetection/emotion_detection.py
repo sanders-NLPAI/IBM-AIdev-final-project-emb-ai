@@ -20,12 +20,13 @@ def emotion_detector(text_to_analyze):
     scores_sorted = sorted(emotion_scores.items(), key=lambda x:x[1], reverse=True)
     dominant_emotion = scores_sorted[0][0]
     
+    '''
     formatted_output ={
         'anger': emotion_scores["anger"],
         'disgust': emotion_scores["disgust"],
         'fear': emotion_scores["fear"],
         'joy': emotion_scores["joy"],
         'sadness': emotion_scores["sadness"],
-        "dominant_emotion" : dominant_emotion
-    }
-    return formatted_output
+        'dominant_emotion' : dominant_emotion
+    }'''
+    return emotion_scores, dominant_emotion
