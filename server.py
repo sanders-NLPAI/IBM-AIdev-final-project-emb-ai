@@ -20,16 +20,21 @@ def run_analyzer():
     text_to_analyze = request.args.get('textToAnalyze')
 
     response = emotion_detector(text_to_analyze)
-    scores = response[0]
-    dominant = response[1]
-    for key,value in scores.items():
-        if type(scores[key]) is float:
-            scores[key] = str(value)
-    res_items = list(scores.items())
+    dominant = response.pop('dominant_emotion')
+    scores = {}
+    
     separator = '\': '
-    formatted_output = f"'{separator.join(res_items[0])}, '{separator.join(res_items[1])}, '{separator.join(res_items[2])}, '{separator.join(res_items[3])} and '{separator.join(res_items[4])}."
-    return ("For the given statement, the system response is "+ formatted_output + "The dominant emotion is " + dominant +".")
-
+    if dominant == None:
+        message = "Invalid text! Please try again!"   
+    else:
+        for key,value in response.items():
+            if type(value) is float:
+                scores[key] = str(value)
+        res_items = list(scores.items())
+        formatted_output = f"'{separator.join(res_items[0])}, '{separator.join(res_items[1])}, '{separator.join(res_items[2])}, '{separator.join(res_items[3])} and '{separator.join(res_items[4])}."
+        message = "For the given statement, the system response is "+ formatted_output + "\nThe dominant emotion is " + dominant +"."
+    return message
+    
 
 @app.route("/")
 def render_index_page():
